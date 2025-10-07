@@ -8,20 +8,20 @@ class PedidosScreen extends StatelessWidget {
     final orders = [
       {
         'id': 'ORD-001',
-        'restaurant': 'Rethaurante El Pato Dorado',
-        'items': '2x Hamburguethath, 1x Papath Fritath',
+        'restaurant': 'Resaurante El Pato Dorado',
+        'items': '2x Hamburguesa, 1x Papas Fritas',
         'status': 'En camino',
         'time': '15 min',
-        'address': 'Calle Fabulotha 123',
-        'driver': 'Pato Vehloth',
+        'address': 'Calle Fabulosa 123',
+        'driver': 'Pato Veloz',
         'rating': 4.9,
         'total': '\$25.99',
         'statusColor': Colors.amber,
       },
       {
         'id': 'ORD-002',
-        'restaurant': 'Pitheria La Magnánima',
-        'items': '1x Pithha Familiar, 2x Refrecoth',
+        'restaurant': 'Pizzeria La Magnánima',
+        'items': '1x Pizza Familiar, 2x Refrescos',
         'status': 'Preparando',
         'time': '25 min',
         'address': 'Av. Increíble 456',
@@ -32,11 +32,11 @@ class PedidosScreen extends StatelessWidget {
       },
       {
         'id': 'ORD-003',
-        'restaurant': 'Café del Pato Thuccethoth',
-        'items': '3x Café Expreth, 2x Croithhanth',
-        'status': 'Entregado',
+        'restaurant': 'Café del Pato',
+        'items': '3x Café Express, 2x Facturas',
+        'status': 'Entregado',//cambiar de estado a switch
         'time': 'Completado',
-        'address': 'Plaza Thuperior 789',
+        'address': 'Plaza Superior 789',
         'driver': 'Pato Rápido',
         'rating': 4.8,
         'total': '\$18.75',
@@ -46,7 +46,7 @@ class PedidosScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mith Pedidoth'),
+        title: const Text('Mis Pedidos'),
         backgroundColor: Colors.black,
         foregroundColor: Colors.amber,
       ),
@@ -54,7 +54,7 @@ class PedidosScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           const Text(
-            '¡Loth pedidoth máth fabulothoth del multiverthho!',
+            '¡Los pedidos más fabulosos del multiverso!',
             style: TextStyle(color: Colors.amber, fontSize: 14),
           ),
           const SizedBox(height: 16),
@@ -152,7 +152,7 @@ class PedidosScreen extends StatelessWidget {
                     backgroundColor: Colors.amber,
                     foregroundColor: Colors.black,
                   ),
-                  child: const Text('Theguir Pedido'),
+                  child: const Text('Seguir Pedido'),
                 ),
               ),
             ],
@@ -183,7 +183,7 @@ class PedidosScreen extends StatelessWidget {
             const SizedBox(height: 16),
             const Text('¿Nuevo Pedido?', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.amber)),
             const SizedBox(height: 8),
-            const Text('¡Hath un pedido MAGNÁNIMO ahora mithmo!', style: TextStyle(fontSize: 14, color: Colors.amber)),
+            const Text('¡Haz un pedido MAGNÁNIMO ahora mismo!', style: TextStyle(fontSize: 14, color: Colors.amber)),
             const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
