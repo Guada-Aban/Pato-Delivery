@@ -38,7 +38,7 @@ class PerfilScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Usuario Fabulotho',
+                    'Usuario Fabuloso',
                     style: TextStyle(fontSize: 14, color: Colors.amber.shade300),
                   ),
                   const SizedBox(height: 16),
@@ -67,8 +67,6 @@ class PerfilScreen extends StatelessWidget {
                 children: [
                   _buildProfileOption(Icons.person, 'Editar Perfil'),
                   _buildProfileOption(Icons.history, 'Historial de Pedidos'),
-                  _buildProfileOption(Icons.payment, 'Métodos de Pago'),
-                  _buildProfileOption(Icons.location_on, 'Direcciones'),
                   _buildProfileOption(Icons.settings, 'Configuración'),
                   _buildProfileOption(Icons.help, 'Ayuda y Soporte'),
                   _buildProfileOption(Icons.logout, 'Cerrar Sesión', isLast: true),
