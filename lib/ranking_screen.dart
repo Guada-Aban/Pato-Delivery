@@ -1,283 +1,401 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
-const List<Map<String, dynamic>> topDrivers = [
-  {
-    'rank': 1,
-    'name': 'Pato Veloz',
-    'deliveries': 342,
-    'rating': 4.9,
-    'avgTime': '12 min',
-    'badge': 'SUPER VELOZ',
-    'trend': '+15',
-  },
-  {
-    'rank': 2,
-    'name': 'Pato Rápido',
-    'deliveries': 298,
-    'rating': 4.8,
-    'avgTime': '14 min',
-    'badge': 'MAGNÁNIMO',
-    'trend': '+8',
-  },
-  {
-    'rank': 3,
-    'name': 'Pato Express',
-    'deliveries': 276,
-    'rating': 4.7,
-    'avgTime': '15 min',
-    'badge': 'FABULOZO',
-    'trend': '+12',
-  },
-  {
-    'rank': 4,
-    'name': 'Pato Turbo',
-    'deliveries': 245,
-    'rating': 4.6,
-    'avgTime': '16 min',
-    'badge': 'INCREÍBLE',
-    'trend': '+5',
-  },
-  {
-    'rank': 5,
-    'name': 'Pato Flash',
-    'deliveries': 223,
-    'rating': 4.5,
-    'avgTime': '17 min',
-    'badge': 'ESPECTACULAR',
-    'trend': '+3',
-  },
+
+// --- Modelo de Datos para el Repartidor ---
+class Repartidor {
+  final int rank;
+  final String nombre;
+  final int entregas;
+  final double rating;
+  final int tiempoPromedio;
+  final String avatarUrl;
+
+
+  const Repartidor({
+    required this.rank,
+    required this.nombre,
+    required this.entregas,
+    required this.rating,
+    required this.tiempoPromedio,
+    required this.avatarUrl,
+  });
+}
+
+
+// --- Datos de Ejemplo (ahora son constantes globales) ---
+const List<Repartidor> _repartidoresData = [
+  Repartidor(rank: 1, nombre: 'Pato Veloz', entregas: 342, rating: 4.9, tiempoPromedio: 12, avatarUrl: ''),
+  Repartidor(rank: 2, nombre: 'Pato Rápido', entregas: 298, rating: 4.8, tiempoPromedio: 14, avatarUrl: ''),
+  Repartidor(rank: 3, nombre: 'Pato Express', entregas: 276, rating: 4.7, tiempoPromedio: 15, avatarUrl: ''),
+  Repartidor(rank: 4, nombre: 'Pato Turbo', entregas: 245, rating: 4.6, tiempoPromedio: 16, avatarUrl: ''),
+  Repartidor(rank: 5, nombre: 'Pato Flash', entregas: 221, rating: 4.5, tiempoPromedio: 18, avatarUrl: ''),
+  Repartidor(rank: 6, nombre: 'Pato Correcaminos', entregas: 198, rating: 4.4, tiempoPromedio: 19, avatarUrl: ''),
+  Repartidor(rank: 7, nombre: 'Pato Sónico', entregas: 175, rating: 4.8, tiempoPromedio: 15, avatarUrl: ''),
+  Repartidor(rank: 8, nombre: 'Pato Usuario', entregas: 156, rating: 4.8, tiempoPromedio: 14, avatarUrl: ''),
 ];
 
+const Repartidor _usuarioActualData = Repartidor(rank: 8, nombre: 'Pato Usuario', entregas: 156, rating: 4.8, tiempoPromedio: 14, avatarUrl: '');
+
+
+// --- Pantalla Principal del Ranking ---
 class RankingPage extends StatelessWidget {
-  const RankingPage({super.key});
+  const RankingPage({Key? key}) : super(key: key);
 
-  Widget _buildStatTile(IconData icon, String value, String label) {
-    return Column(
-      children: [
-        Icon(icon, size: 28, color: Colors.amber),
-        const SizedBox(height: 6),
-        Text(value, style: const TextStyle(color: Colors.amber, fontSize: 20, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 4),
-        Text(label, style: const TextStyle(color: Colors.amber, fontSize: 12)),
-      ],
-    );
-  }
 
-  Widget _buildDriverCard(Map<String, dynamic> driver, Map<int, Color> rankColors) {
-    final rank = driver['rank'] as int;
-    final badgeColor = rankColors.containsKey(rank) ? rankColors[rank] : Colors.grey.shade800;
+  @override
+  Widget build(BuildContext context) {
+    const goldColor = Color(0xFFFFD700);
+    final backgroundColor = Colors.black54;
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.black,
-        border: Border.all(color: rank <= 3 ? Colors.amber : Colors.grey.shade800),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          if (rank <= 3)
-            BoxShadow(
-              color: Colors.amber.withOpacity(0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Row(
+
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: SafeArea(
+        child: Column(
           children: [
-            // Avatar + trophy badge
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.amber, width: 2),
-                  ),
-                  child: CircleAvatar(
-                    radius: 28,
-                    backgroundColor: Colors.amber.withOpacity(0.1),
-                    child: Text('#${driver['rank']}', style: const TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
-                  ),
-                ),
-                if (rank <= 3)
-                  Positioned(
-                    right: -6,
-                    top: -6,
-                    child: Container(
-                      height: 24,
-                      width: 24,
-                      decoration: BoxDecoration(
-                        color: badgeColor,
-                        shape: BoxShape.circle,
-                        border: Border.all(color: Colors.amber, width: 1),
-                      ),
-                      child: Icon(Icons.emoji_events, size: 14, color: rank == 1 ? Colors.black : Colors.amber),
-                    ),
-                  ),
-              ],
-            ),
-            const SizedBox(width: 12),
-            // Info
+            const _RankingHeader(goldColor: goldColor),
+            _PodiumWidget(repartidores: _repartidoresData),
+            const SizedBox(height: 24),
             Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(child: Text(driver['name'], style: const TextStyle(color: Colors.amber, fontWeight: FontWeight.bold))),
-                      Row(
-                        children: [
-                          const Icon(Icons.trending_up, size: 16, color: Colors.amber),
-                          const SizedBox(width: 4),
-                          Text(driver['trend'], style: const TextStyle(color: Colors.amber, fontSize: 12)),
-                        ],
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.amber.withOpacity(0.1),
-                      border: Border.all(color: Colors.amber),
-                    ),
-                    child: Text(driver['badge'], style: const TextStyle(color: Colors.amber, fontSize: 11, fontWeight: FontWeight.bold)),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(Icons.local_shipping, size: 14, color: Colors.amber),
-                          const SizedBox(width: 6),
-                          Text('${driver['deliveries']}', style: const TextStyle(color: Colors.amber)),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Icon(Icons.star, size: 14, color: Colors.amber),
-                          const SizedBox(width: 6),
-                          Text('${driver['rating']}', style: const TextStyle(color: Colors.amber)),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          const Icon(Icons.access_time, size: 14, color: Colors.amber),
-                          const SizedBox(width: 6),
-                          Text(driver['avgTime'], style: const TextStyle(color: Colors.amber)),
-                        ],
-                      ),
-                    ],
-                  )
-                ],
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemCount: _repartidoresData.length - 3,
+                itemBuilder: (context, index) {
+                  final repartidor = _repartidoresData[index + 3];
+                  return _RankingListItem(repartidor: repartidor);
+                },
               ),
             ),
+            const _YourPositionBar(usuarioActual: _usuarioActualData, goldColor: goldColor),
           ],
         ),
       ),
     );
   }
+}
+
+
+// --- Widget para el Header ---
+class _RankingHeader extends StatelessWidget {
+  final Color goldColor;
+  const _RankingHeader({Key? key, required this.goldColor}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
-    final rankColors = {
-      1: Colors.amber,
-      2: Colors.amber.shade800,
-      3: Colors.amber.shade700,
-    };
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ranking Fabuloso', style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.amber),
-        elevation: 0,
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Text(
+        'Ranking Fabuloso',
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.w900,
+          color: goldColor,
+          letterSpacing: -0.5,
+        ),
       ),
-      backgroundColor: Colors.black,
-      body: ListView(
-        padding: const EdgeInsets.all(16),
+    );
+  }
+}
+
+
+// --- Widget para el Podio ---
+class _PodiumWidget extends StatelessWidget {
+  final List<Repartidor> repartidores;
+  const _PodiumWidget({Key? key, required this.repartidores}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 280,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // Header
-          Row(
+          _PodiumPlaceWidget(
+            repartidor: repartidores[1],
+            borderColor: const Color(0xFFC0C0C0),
+            podiumHeight: 80,
+            avatarRadius: 30,
+          ),
+          const SizedBox(width: 10),
+          _PodiumPlaceWidget(
+            repartidor: repartidores[0],
+            borderColor: const Color(0xFFFFD700),
+            podiumHeight: 110,
+            avatarRadius: 38,
+            isFirstPlace: true,
+          ),
+          const SizedBox(width: 10),
+          _PodiumPlaceWidget(
+            repartidor: repartidores[2],
+            borderColor: const Color(0xFFCD7F32),
+            podiumHeight: 60,
+            avatarRadius: 30,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+// --- Widget para cada lugar del Podio ---
+class _PodiumPlaceWidget extends StatelessWidget {
+  final Repartidor repartidor;
+  final Color borderColor;
+  final double podiumHeight;
+  final double avatarRadius;
+  final bool isFirstPlace;
+
+
+  const _PodiumPlaceWidget({
+    Key? key,
+    required this.repartidor,
+    required this.borderColor,
+    required this.podiumHeight,
+    required this.avatarRadius,
+    this.isFirstPlace = false,
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (isFirstPlace)
+          Transform.rotate(
+            angle: -math.pi / 20,
+            child: const Icon(Icons.emoji_events, color: Color(0xFFFFD700), size: 32),
+          ),
+        if (!isFirstPlace) const SizedBox(height: 32),
+        const SizedBox(height: 4),
+        CircleAvatar(
+          radius: avatarRadius + 3,
+          backgroundColor: borderColor,
+          child: CircleAvatar(
+            radius: avatarRadius,
+            backgroundColor: Colors.grey[800],
+            child: Text(
+              repartidor.nombre.substring(0, 2).toUpperCase(),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: avatarRadius * 0.6),
+            ),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          repartidor.nombre,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          '${repartidor.entregas} Entregas',
+          style: TextStyle(
+            color: isFirstPlace ? const Color(0xFFFFD700) : Colors.grey[400],
+            fontWeight: FontWeight.w600,
+            fontSize: 11,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Container(
+          height: podiumHeight,
+          width: 85,
+          decoration: BoxDecoration(
+            color: Colors.grey[850],
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(8),
+              topRight: Radius.circular(8),
+            ),
+            border: Border.all(color: borderColor, width: 2),
+          ),
+          child: Center(
+              child: Text(
+                '#${repartidor.rank}',
+                style: TextStyle(
+                    color: borderColor, fontSize: 32, fontWeight: FontWeight.w900),
+              )),
+        ),
+      ],
+    );
+  }
+}
+
+
+// --- Widget para cada item de la lista de ranking ---
+class _RankingListItem extends StatelessWidget {
+  final Repartidor repartidor;
+  const _RankingListItem({Key? key, required this.repartidor}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.grey[900]?.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey[800]!, width: 1),
+      ),
+      child: Row(
+        children: [
+          Text(
+            '#${repartidor.rank}',
+            style: TextStyle(
+              color: Colors.grey[400],
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          const SizedBox(width: 12),
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: Colors.grey[700],
+            child: Text(
+              repartidor.nombre.substring(0, 2).toUpperCase(),
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  repartidor.nombre,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  '${repartidor.entregas} Entregas',
+                  style: TextStyle(
+                    color: Colors.grey[500],
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Icon(Icons.emoji_events, size: 36, color: Colors.amber.shade400),
-              const SizedBox(width: 8),
-              const Expanded(
-                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('Ranking Fabuloso', style: TextStyle(color: Colors.amber, fontSize: 22, fontWeight: FontWeight.bold)),
-                  SizedBox(height: 2),
-                  Text('¡Los repartidores más MAGNÁNIMOS del equipo!', style: TextStyle(color: Colors.amber)),
-                ]),
+              Text(
+                '${repartidor.rating} ★',
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                '${repartidor.tiempoPromedio} min',
+                style: TextStyle(
+                  color: Colors.grey[500],
+                  fontSize: 12,
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 12),
+        ],
+      ),
+    );
+  }
+}
 
-          // Stats card
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.amber),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.amber.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildStatTile(Icons.inventory_2, '1,384', 'Entregas Totales'),
-                _buildStatTile(Icons.star, '4.7', 'Rating Promedio'),
-                _buildStatTile(Icons.access_time, '14.8', 'Min Promedio'),
-              ],
+
+// --- Widget para la barra inferior de "Tu Posición" ---
+class _YourPositionBar extends StatelessWidget {
+  final Repartidor usuarioActual;
+  final Color goldColor;
+
+  const _YourPositionBar({Key? key, required this.usuarioActual, required this.goldColor}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        border: Border(
+          top: BorderSide(color: goldColor.withOpacity(0.5), width: 2),
+        ),
+      ),
+      child: Row(
+        children: [
+          Text(
+            '#${usuarioActual.rank}',
+            style: TextStyle(
+              color: goldColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
             ),
           ),
-
-          const SizedBox(height: 14),
-
-          // Drivers list
-          ...topDrivers.map((d) => _buildDriverCard(d, rankColors)).toList(),
-
-          const SizedBox(height: 12),
-
-          // CTA card
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.amber),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.amber.withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
+          const SizedBox(width: 12),
+          CircleAvatar(
+            radius: 20,
+            backgroundColor: goldColor,
+            child: Text(
+              usuarioActual.nombre.substring(0, 2).toUpperCase(),
+              style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12),
             ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.emoji_events, size: 36, color: Colors.amber.shade400),
-                const SizedBox(height: 8),
-                const Text('¡Únete al equipo más FABULOSO del multiverso!',
-                    style: TextStyle(color: Colors.amber, fontWeight: FontWeight.w600)),
-                const SizedBox(height: 6),
-                Text('Conviértete en repartidor y compite por el primer lugar',
-                    style: TextStyle(color: Colors.amber.shade300)),
+                const Text(
+                  'Tu Puesto',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  '${usuarioActual.entregas} Entregas',
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 12,
+                  ),
+                ),
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                '${usuarioActual.rating} ★',
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                '${usuarioActual.tiempoPromedio} min',
+                style: TextStyle(
+                  color: Colors.grey[400],
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
