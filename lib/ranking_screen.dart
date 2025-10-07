@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 const List<Map<String, dynamic>> topDrivers = [
   {
     'rank': 1,
-    'name': 'Pato Vehloth',
+    'name': 'Pato Veloz',
     'deliveries': 342,
     'rating': 4.9,
     'avgTime': '12 min',
-    'badge': 'THUPER VEHLOTH',
+    'badge': 'SUPER VELOZ',
     'trend': '+15',
   },
   {
@@ -21,11 +21,11 @@ const List<Map<String, dynamic>> topDrivers = [
   },
   {
     'rank': 3,
-    'name': 'Pato Expreth',
+    'name': 'Pato Express',
     'deliveries': 276,
     'rating': 4.7,
     'avgTime': '15 min',
-    'badge': 'FABULOTHO',
+    'badge': 'FABULOZO',
     'trend': '+12',
   },
   {
@@ -43,7 +43,7 @@ const List<Map<String, dynamic>> topDrivers = [
     'deliveries': 223,
     'rating': 4.5,
     'avgTime': '17 min',
-    'badge': 'ETHPECTACULAR',
+    'badge': 'ESPECTACULAR',
     'trend': '+3',
   },
 ];
@@ -192,7 +192,7 @@ class RankingPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Ranking Fabulotho', style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
+        title: const Text('Ranking Fabuloso', style: TextStyle(color: Colors.amber, fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.black,
         iconTheme: const IconThemeData(color: Colors.amber),
@@ -209,7 +209,7 @@ class RankingPage extends StatelessWidget {
               const SizedBox(width: 8),
               const Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('Ranking Fabulotho', style: TextStyle(color: Colors.amber, fontSize: 22, fontWeight: FontWeight.bold)),
+                  Text('Ranking Fabuloso', style: TextStyle(color: Colors.amber, fontSize: 22, fontWeight: FontWeight.bold)),
                   SizedBox(height: 2),
                   Text('¡Los repartidores más MAGNÁNIMOS del equipo!', style: TextStyle(color: Colors.amber)),
                 ]),
@@ -269,7 +269,7 @@ class RankingPage extends StatelessWidget {
               children: [
                 Icon(Icons.emoji_events, size: 36, color: Colors.amber.shade400),
                 const SizedBox(height: 8),
-                const Text('¡Únete al equipo más FABULOTHO del multivertho!',
+                const Text('¡Únete al equipo más FABULOSO del multiverso!',
                     style: TextStyle(color: Colors.amber, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 6),
                 Text('Conviértete en repartidor y compite por el primer lugar',
