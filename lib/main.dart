@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-// Importa todas tus pantallas
+// Importa todas las pantallas
 import 'home_screen.dart';
 import 'pedidos_screen.dart';
 import 'perfil_screen.dart';
-import 'ranking_screen.dart'; // Asegúrate que el archivo se llame ranking_screen.dart
+import 'ranking_screen.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'DeliveryExpreth',
+      title: 'DeliveryExpress',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
@@ -63,7 +63,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _screens = [
     const HomeScreen(),
     const PedidosScreen(),
-    const RankingPage(), // Esto está correcto si la clase se llama RankingPage
+    const RankingPage(), 
     const PerfilScreen(),
   ];
 
@@ -85,7 +85,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_bag),
-            label: 'Pedidoth',
+            label: 'Pedidos',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.emoji_events),
